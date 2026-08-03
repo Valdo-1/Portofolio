@@ -4,10 +4,15 @@ $q_slider = mysqli_query($conn, "SELECT * FROM sliders WHERE is_active=1 ORDER B
 $sliders = mysqli_fetch_all($q_slider, MYSQLI_ASSOC);
 $q_setting = mysqli_query($conn, "SELECT * FROM settings ORDER BY id DESC LIMIT 1");
 $about = mysqli_fetch_assoc($q_setting);
+$q_resume = mysqli_query($conn, "SELECT * FROM resume ORDER BY id DESC");
+$resume = mysqli_fetch_all($q_resume, MYSQLI_ASSOC);
+$q_skills = mysqli_query($conn, "SELECT * FROM skills ORDER BY id DESC");
+$skills = mysqli_fetch_all($q_skills, MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 -
+
 <head>
 	<title>Clark - Free Bootstrap 4 Template by Colorlib</title>
 	<meta charset="utf-8">
@@ -56,40 +61,40 @@ $about = mysqli_fetch_assoc($q_setting);
 	<section id="home-section" class="hero">
 		<div class="home-slider  owl-carousel">
 			<?php
-			foreach ($sliders as $index => $v){
-				$title = explode(" ", $v['title']); 
-				?>				
+			foreach ($sliders as $index => $v) {
+				$title = explode(" ", $v['title']);
+			?>
 				<div class="slider-item ">
+					<div class="overlay"></div>
+					<div class="container">
+						<div class="row d-md-flex no-gutters slider-text align-items-end justify-content-end" data-scrollax-parent="true">
+							<div class="one-third js-fullheight order-md-last img h-75 rounded-circle img-thumbnail"  style="background-image:url(project-crud/upload/ppkd.jpeg);">
+								<div class="overlay"></div>
+							</div>
+							<div class="one-forth d-flex  align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
+								<div class="text">
+									<span class="subheading">ganteng</span>
+									<h1 class="mb-4 mt-3"><?php echo $title['0']; ?> <span><?php array_shift($title);
+																							echo implode(" ", $title); ?></span></h1>
+									<h2 class="mb-4"><?php echo $v['subtitle'] ?></h2>
+									<p class="mb-4 text-light"><?php echo $v['description'] ?></p>
+									<p>
+										<a href="<?php echo $v['button1_link'] ?>" class="btn btn-primary py-3 px-4"><?php echo $v['button1_text'] ?></a>
+										<a href="<?php echo $v['button2_link'] ?>" class="btn btn-white btn-outline-white py-3 px-4"><?php echo $v['button2_text'] ?></a>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			<?php
+			}
+			?>
+			<div class="slider-item">
 				<div class="overlay"></div>
 				<div class="container">
-				<div class="row d-md-flex no-gutters slider-text align-items-end justify-content-end" data-scrollax-parent="true">
-						<div class="one-third js-fullheight order-md-last img" style="background-image:url(project-crud/upload/ppkd.jpeg);">
-							<div class="overlay"></div>
-						</div>
-						<div class="one-forth d-flex  align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-						<div class="text">
-							<span class="subheading">ganteng</span>
-							<h1 class="mb-4 mt-3"><?php echo $title['0'];?> <span><?php array_shift($title);
-							echo implode(" ", $title);?></span></h1>
-							<h2 class="mb-4"><?php echo $v['subtitle']?></h2>
-							<p class="mb-4 text-light"><?php echo $v['description']?></p>
-							<p>
-								<a href="<?php echo $v['button1_link']?>" class="btn btn-primary py-3 px-4"><?php echo $v['button1_text']?></a>
-								<a href="<?php echo $v['button2_link']?>" class="btn btn-white btn-outline-white py-3 px-4"><?php echo $v['button2_text']?></a>
-							</p>
-						</div>
-								</div>
-								</div>
-								</div>
-								</div>
-								<?php
-								}
-								?>
-								<div class="slider-item">
-								<div class="overlay"></div>
-								<div class="container">
-								<div class="row d-flex no-gutters slider-text align-items-end justify-content-end" data-scrollax-parent="true">
-								<div class="one-third js-fullheight order-md-last img" style="background-image:url(images/bg_2.png);">
+					<div class="row d-flex no-gutters slider-text align-items-end justify-content-end" data-scrollax-parent="true">
+						<div class="one-third js-fullheight order-md-last img" style="background-image:url(images/bg_2.png);">
 							<div class="overlay"></div>
 						</div>
 						<div class="one-forth d-flex align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
@@ -155,14 +160,20 @@ $about = mysqli_fetch_assoc($q_setting);
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-6">
-					<div class="resume-wrap ftco-animate">
-						<span class="date">2014-2015</span>
-						<h2>Master Degree of Design</h2>
-						<span class="position">Cambridge University</span>
-						<p class="mt-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-					</div>
-					<div class="resume-wrap ftco-animate">
+				<?php foreach ($resume as $v) {
+				?>
+
+					<div class="col-md-6">
+						<div class="resume-wrap ftco-animate">
+							<span class="date"><?= $v['year_start'] . " - " . $v['year_end'] ?></span>
+							<h2><?= $v['title'] ?></h2>
+							<span class="position">Cambridge University</span>
+							<p class="mt-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+						</div>
+					<?php
+				}
+					?>
+					<!-- <div class="resume-wrap ftco-animate">
 						<span class="date">2014-2015</span>
 						<h2>Bachelor's Degree of C.A</h2>
 						<span class="position">Cambridge University</span>
@@ -174,9 +185,9 @@ $about = mysqli_fetch_assoc($q_setting);
 						<span class="position">Cambridge University</span>
 						<p class="mt-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
 					</div>
-				</div>
+				</div> -->
 
-				<div class="col-md-6">
+					<!-- <div class="col-md-6">
 					<div class="resume-wrap ftco-animate">
 						<span class="date">2014-2015</span>
 						<h2>Art &amp; Creative Director</h2>
@@ -195,14 +206,14 @@ $about = mysqli_fetch_assoc($q_setting);
 						<span class="position">Cambridge University</span>
 						<p class="mt-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
 					</div>
-				</div>
+				</div> -->
+					</div>
+					<div class="row justify-content-center mt-5">
+						<div class="col-md-6 text-center ftco-animate">
+							<p><a href="#" class="btn btn-primary py-4 px-5">Download CV</a></p>
+						</div>
+					</div>
 			</div>
-			<div class="row justify-content-center mt-5">
-				<div class="col-md-6 text-center ftco-animate">
-					<p><a href="#" class="btn btn-primary py-4 px-5">Download CV</a></p>
-				</div>
-			</div>
-		</div>
 	</section>
 
 	<section class="ftco-section" id="services-section">
@@ -286,23 +297,27 @@ $about = mysqli_fetch_assoc($q_setting);
 			<div class="row justify-content-center pb-5">
 				<div class="col-md-12 heading-section text-center ftco-animate">
 					<h1 class="big big-2">Skills</h1>
-					<h2 class="mb-4">My Skills</h2>
+					<h2 class="mb-4">My Skill</h2>
 					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-6 animate-box">
-					<div class="progress-wrap ftco-animate">
-						<h3>Photoshop</h3>
-						<div class="progress">
-							<div class="progress-bar color-1" role="progressbar" aria-valuenow="90"
-								aria-valuemin="0" aria-valuemax="100" style="width:90%">
-								<span>90%</span>
+				<?php foreach ($skills as $s) {
+				?>
+					<div class="col-md-6 animate-box">
+						<div class="progress-wrap ftco-animate">
+							<h3><?= $s['name'] ?></h3>
+							<div class="progress">
+								<div class="progress-bar color-1" role="progressbar" aria-valuenow="<?= $s['progress'] ?>"
+									style="width: <?= $s['progress'] ?>%">
+									<span><?= $s['progress']?>%</span>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-md-6 animate-box">
+				<?php }
+				?>
+				<!-- <div class="col-md-6 animate-box">
 					<div class="progress-wrap ftco-animate">
 						<h3>jQuery</h3>
 						<div class="progress">
@@ -357,8 +372,9 @@ $about = mysqli_fetch_assoc($q_setting);
 						</div>
 					</div>
 				</div>
+			</div> -->
+
 			</div>
-		</div>
 	</section>
 
 
@@ -431,6 +447,7 @@ $about = mysqli_fetch_assoc($q_setting);
 					</div>
 				</div>
 			</div>
+
 		</div>
 	</section>
 
