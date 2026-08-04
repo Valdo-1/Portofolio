@@ -389,9 +389,9 @@ $skills = mysqli_fetch_all($q_skills, MYSQLI_ASSOC);
 			</div>
 			<div class="row">
 				<div class="col-md-4">
-					<div class="project img ftco-animate d-flex justify-content-center align-items-center" style="background-image: url('images/project-4.jpg');">
+					<div class="project img ftco-animate d-flex justify-content-center align-items-center" style="background-image: url('images/project-4.jpg');<?php ?>">
 						<div class="overlay"></div>
-						<div class="text text-center p-4">
+						<div class="text text-center p-4"> 
 							<h3><a href="#">Branding &amp; Illustration Design</a></h3>
 							<span>Web Design</span>
 						</div>
