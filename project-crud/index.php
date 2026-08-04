@@ -1,0 +1,122 @@
+<?php
+session_start();
+// Memanggil file koneksi agar skrip ini bisa terhubung ke database MySQL
+include __DIR__ . '/config/koneksi.php';
+
+// Memulai sesi (session) untuk "mengingat" pengguna jika mereka berhasil login
+
+// Mengecek apakah form sudah dikirim (yaitu saat tombol dengan name="login" ditekan)
+if(isset($_POST['login'])) {
+
+    // Mengambil data email dari form dan mengamankannya dari serangan SQL Injection dasar
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    
+    // Mengambil data password yang diketik pengguna di form
+    $pass = sha1($_POST['password']);
+
+    // Mengirim perintah SQL ke database untuk mencari pengguna berdasarkan email yang diketik
+    $query = "SELECT * FROM users WHERE email = '$email'";
+    $result = mysqli_query($conn, $query);
+
+    // Mengambil hasil pencarian dari database dan mengubahnya menjadi array
+    $row = mysqli_fetch_assoc($result);
+
+    // Mengecek apakah data pengguna dengan email tersebut ditemukan di database
+    if ($row) {
+        
+        // Memeriksa kecocokan password (PERHATIKAN: menggunakan '==' untuk membandingkan, bukan '=' untuk mengisi nilai)
+        if ($email == $row['email'] && $pass == $row['password']) {
+
+            // Jika email dan password cocok, simpan nama pengguna ke dalam sesi
+            // Data ini nanti bisa dipanggil di halaman dashboard (misal: "Selamat datang, [Nama]")
+            $_SESSION['NAME'] = $row['name'];
+
+            // Pindahkan (redirect) pengguna yang berhasil login ke halaman dashboard
+            header("location:dashboard.php");
+            exit();
+            
+        } else {
+            // Jika password salah, kembalikan pengguna ke halaman login
+            header("location:index.php");
+            exit();
+        }
+    } else {
+        // Jika email sama sekali tidak terdaftar di database, kembalikan ke halaman login
+        header("location:index.php");
+        exit();
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Signin - InApp Inventory Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/inapp-1.0.0/src/assets/images/favicon_io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/inapp-1.0.0/src/assets/images/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/inapp-1.0.0/src/assets/images/favicon_io/favicon-16x16.png">
+  <link rel="manifest" href="assets/inapp-1.0.0/src/assets/images/favicon_io/site.webmanifest">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+
+
+</head>
+
+<body>
+
+
+  <div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card " style="max-width:420px; width:100%;">
+      <div class="card-body p-5">
+        <div class="text-center mb-3">
+          <a href="index.html" class="mb-4 d-inline-block"><img src="assets/inapp-1.0.0/src/assets/images/logo-icon.svg" alt="" width="36">
+            <span class=" ms-2"> <img src="assets/inapp-1.0.0/src/assets/images/logo.svg" alt=""></span>
+          </a>
+          <h1 class="card-title mb-5 h5">Sign in to your account</h1>
+
+        </div>
+
+        <form method="POST" class="needs-validation mt-3" novalidate>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input name="email" id="email" type="email" class="form-control" placeholder="name@example.com" required autofocus>
+            <div class="invalid-feedback">Please enter a valid email.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label d-flex justify-content-between">
+              <span>Password</span>
+              <a href="#" class="small link-primary">Forgot Password?</a>
+            </label>
+            <input name="password" id="password" type="password" class="form-control" placeholder="Password" required minlength="6">
+            <div class="invalid-feedback">Please provide a password (min 6 characters).</div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="form-check">
+              <input id="remember" class="form-check-input" type="checkbox">
+              <label class="form-check-label small" for="remember">Remember me</label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary w-100" type="submit" name="login">Sign in</button>
+        </form>
+
+        <div class="text-center mt-3 small text-muted">
+          Don't have an account? <a href="signup.html" class="link-primary">Sign up</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Bootstrap JS -->
+  <script src="assets/inapp-1.0.0/src/assets/js/main.js" type="module"></script>
+
+
+</body>
+
+</html>""
