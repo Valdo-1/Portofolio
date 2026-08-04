@@ -302,15 +302,15 @@ $skills = mysqli_fetch_all($q_skills, MYSQLI_ASSOC);
 				</div>
 			</div>
 			<div class="row">
-				<?php foreach ($skills as $s) {
+				<?php foreach ($skills as $index => $v) {
 				?>
 					<div class="col-md-6 animate-box">
 						<div class="progress-wrap ftco-animate">
-							<h3><?= $s['name'] ?></h3>
+							<h3 style=" margin-bottom: <?= $v ['progress'] <= 10 ? '33px' : '5px' ?>;"><?= $v['name'] ?></h3>
 							<div class="progress">
-								<div class="progress-bar color-1" role="progressbar" aria-valuenow="<?= $s['progress'] ?>"
-									style="width: <?= $s['progress'] ?>%">
-									<span><?= $s['progress']?>%</span>
+								<div class="progress-bar color- <? $index +1 ?>" role="progressbar" aria-valuenow="<?= $v['progress'] ?>"
+									style="width: <?= $v['progress'] ?>%">
+									<span style="padding-left 40px"><?= $v['progress']?>%</span>
 								</div>
 							</div>
 						</div>
@@ -389,7 +389,7 @@ $skills = mysqli_fetch_all($q_skills, MYSQLI_ASSOC);
 			</div>
 			<div class="row">
 				<div class="col-md-4">
-					<div class="project img ftco-animate d-flex justify-content-center align-items-center" style="background-image: url(images/project-4.jpg);">
+					<div class="project img ftco-animate d-flex justify-content-center align-items-center" style="background-image: url('images/project-4.jpg');">
 						<div class="overlay"></div>
 						<div class="text text-center p-4">
 							<h3><a href="#">Branding &amp; Illustration Design</a></h3>
